@@ -27,6 +27,21 @@ export const useMemberStore = defineStore(
   },
   // TODO: 持久化
   {
-    persist: true,
+    // 网页端配置
+    // persist: true,
+    // 小程序端配置
+    persist: {
+      storage: {
+        getItem: (key: string) => {
+          return uni.getStorageSync(key)
+        },
+        setItem: (key: string, value: any) => {
+          uni.setStorageSync(key, value)
+        },
+        // removeItem: (key: string) => {
+        //   wx.removeStorageSync(key)
+        // },
+      },
+    },
   },
 )
