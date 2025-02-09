@@ -39,7 +39,7 @@ export const useMemberStore = defineStore(
           uni.setStorageSync(key, value)
         },
         // removeItem: (key: string) => {
-        //   wx.removeStorageSync(key)
+        //   uni.removeStorageSync(key)
         // },
       },
     },
