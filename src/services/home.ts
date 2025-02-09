@@ -1,4 +1,4 @@
-import { BannerItem, CategoryItem } from '@/types/home'
+import { BannerItem, CategoryItem, HotItem } from '@/types/home'
 import { http } from '@/utils/https'
 
 /**
@@ -23,6 +23,14 @@ export const getHomeBannerApi = (distributionSite = 1) => {
 export const getHomeCategoryApi = () => {
   return http<CategoryItem[]>({
     url: '/home/category/mutli',
+    method: 'GET',
+  })
+}
+
+// 首页-热门推荐 /home/hot/mutli
+export const getHomeHotApi = () => {
+  return http<HotItem[]>({
+    url: '/home/hot/mutli',
     method: 'GET',
   })
 }
