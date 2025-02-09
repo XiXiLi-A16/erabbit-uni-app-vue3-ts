@@ -1,4 +1,5 @@
-import { BannerItem, CategoryItem, HotItem } from '@/types/home'
+import { PageResult } from '@/types/global'
+import { BannerItem, CategoryItem, GuessItem, HotItem } from '@/types/home'
 import { http } from '@/utils/https'
 
 /**
@@ -27,10 +28,25 @@ export const getHomeCategoryApi = () => {
   })
 }
 
-// 首页-热门推荐 /home/hot/mutli
+/**
+ * 首页-热门推荐
+ * @returns
+ */
 export const getHomeHotApi = () => {
   return http<HotItem[]>({
     url: '/home/hot/mutli',
     method: 'GET',
+  })
+}
+
+/**
+ * 首页-猜你喜欢
+ * @returns
+ */
+export const getHomeGoodsGuessLikeApi = () => {
+  return http<PageResult<GuessItem>>({
+    url: '/home/goods/guessLike',
+    method: 'GET',
+    data: {},
   })
 }
