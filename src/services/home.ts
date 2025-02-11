@@ -1,4 +1,4 @@
-import { PageResult } from '@/types/global'
+import { PageParams, PageResult } from '@/types/global'
 import { BannerItem, CategoryItem, GuessItem, HotItem } from '@/types/home'
 import { http } from '@/utils/https'
 
@@ -43,10 +43,10 @@ export const getHomeHotApi = () => {
  * 首页-猜你喜欢
  * @returns
  */
-export const getHomeGoodsGuessLikeApi = () => {
+export const getHomeGoodsGuessLikeApi = (data?: PageParams) => {
   return http<PageResult<GuessItem>>({
     url: '/home/goods/guessLike',
     method: 'GET',
-    data: {},
+    data,
   })
 }
