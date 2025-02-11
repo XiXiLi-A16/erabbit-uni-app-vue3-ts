@@ -9,11 +9,13 @@ const pageParams: Required<PageParams> = {
   page: 1,
   pageSize: 10,
 }
+
 // 猜你喜欢列表
 const guessList = ref<GuessItem[]>([])
 
 // 已结束标记
 const finish = ref(false)
+
 // 获取猜你喜欢数据
 const getHomeGoodsGuessLikeData = async () => {
   // 退出判断
