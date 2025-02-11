@@ -1,5 +1,6 @@
 import { http } from '@/utils/https'
 import type { PageParams } from '@/types/global'
+import { HotResult } from '@/types/hot'
 
 /**
  * 通用热门推荐类型
@@ -8,7 +9,7 @@ import type { PageParams } from '@/types/global'
  */
 type HotParams = PageParams & { subType?: string }
 export const getHotRecommendApi = (url: string, data?: HotParams) => {
-  return http({
+  return http<HotResult>({
     method: 'GET',
     url,
     data,
