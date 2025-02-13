@@ -7,7 +7,6 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "module": "es2020",
     "lib": ["esnext", "dom"],
     "types": [
       "@dcloudio/types",
