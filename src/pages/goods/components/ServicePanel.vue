@@ -1,12 +1,15 @@
 // ServicePanel.vue
 <script setup lang="ts">
-//
+// 子调父
+const emit = defineEmits<{
+  (e: 'close'): void
+}>()
 </script>
 
 <template>
   <view class="service-panel">
     <!-- 关闭按钮 -->
-    <text class="close icon-close"></text>
+    <text class="close icon-close" @tap="emit('close')"></text>
     <!-- 标题 -->
     <view class="title">服务说明</view>
     <!-- 内容 -->
