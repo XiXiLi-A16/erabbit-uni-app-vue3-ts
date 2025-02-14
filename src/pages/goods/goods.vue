@@ -22,6 +22,27 @@ const getGoodsByIdData = async () => {
 onLoad(() => {
   getGoodsByIdData()
 })
+
+// 轮播图变化时
+const currentIndex = ref(0)
+const onChange: UniHelper.SwiperOnChange = (e) => {
+  currentIndex.value = e.detail.current
+}
+
+// 点击图片时
+const onTapImage = (url: string) => {
+  // 大图预览
+  uni.previewImage({
+    current: url,
+    urls: goods.value!.mainPictures,
+  })
+}
+
+// uni-ui 弹出层组件 ref
+const popup = ref<{
+  open: (type?: UniHelper.UniPopupType) => void
+  close: () => void
+}>()
 </script>
 
 <template>
@@ -30,13 +51,13 @@ onLoad(() => {
     <view class="goods">
       <!-- 商品主图 -->
       <view class="preview">
-        <swiper circular>
+        <swiper @change="onChange" circular>
           <swiper-item v-for="item in goods?.mainPictures" :key="item">
-            <image mode="aspectFill" :src="item" />
+            <image @tap="onTapImage(item)" mode="aspectFill" :src="item" />
           </swiper-item>
         </swiper>
         <view class="indicator">
-          <text class="current">1</text>
+          <text class="current">{{ currentIndex + 1 }}</text>
           <text class="split">/</text>
           <text class="total">{{ goods?.mainPictures.length }}</text>
         </view>
@@ -62,7 +83,7 @@ onLoad(() => {
           <text class="label">送至</text>
           <text class="text ellipsis"> 请选择收获地址 </text>
         </view>
-        <view class="item arrow">
+        <view @tap="popup.open('bottom')" class="item arrow">
           <text class="label">服务</text>
           <text class="text ellipsis"> 无忧退 快速退款 免费包邮 </text>
         </view>
@@ -132,6 +153,11 @@ onLoad(() => {
       <view class="buynow"> 立即购买 </view>
     </view>
   </view>
+  <uni-popup ref="popup" type="bottom" background-color="#fff">
+    <view>内容1</view>
+    <view>内容2</view>
+    <button @tap="popup.close()">关闭弹出层</button>
+  </uni-popup>
 </template>
 
 <style lang="scss">
