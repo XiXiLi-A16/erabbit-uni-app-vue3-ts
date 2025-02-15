@@ -5,8 +5,8 @@ import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import CategoryPanel from './components/CategoryPanel.vue'
 import HotPanel from './components/HotPanel.vue'
-import { XtxGuessInstance } from '@/types/component'
 import PageSkeleton from './components/PageSkeleton.vue'
+import { useGuessList } from '@/composables'
 
 // 获取首页轮播图数据
 const bannerList = ref([])
@@ -30,14 +30,8 @@ const getHomeHotData = async () => {
   hotList.value = res.result
 }
 
-// 猜你喜欢实例
-const guessRef = ref<XtxGuessInstance>()
-
-// 滚动触底
-const onScrolltolower = () => {
-  // console.log('触底了')
-  guessRef.value?.getMore()
-}
+// 调用猜你喜欢组合式函数
+const { guessRef, onScrolltolower } = useGuessList()
 
 const isTriggered = ref(false)
 
