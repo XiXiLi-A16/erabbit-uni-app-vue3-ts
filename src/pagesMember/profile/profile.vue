@@ -16,6 +16,45 @@ const getMemberProfileData = async () => {
 onLoad(() => {
   getMemberProfileData()
 })
+
+const onAvatarChange = () => {
+  // 调用拍照/选择图片api
+  uni.chooseMedia({
+    count: 1,
+    mediaType: ['image'],
+    success: (res) => {
+      console.log(res)
+      const { tempFilePath } = res.tempFiles[0]
+      uploadAvatar(tempFilePath)
+    },
+  })
+}
+const onChooseAvatar: UniHelper.ButtonOnChooseavatar = (e) => {
+  console.log(e)
+  const { avatarUrl } = e.detail
+  // uploadAvatar(avatarUrl)
+  // 伪装实现，没有上传服务器
+  profile.value!.avatar = avatarUrl
+  uni.showToast({ title: '头像修改成功', icon: 'success' })
+}
+
+// 文件上传，写法正确，黑马的接口挂了
+const uploadAvatar = (tempUrl: string) => {
+  uni.uploadFile({
+    url: '/member/profile/avatar',
+    name: 'file',
+    filePath: tempUrl,
+    success: (res) => {
+      if (res.statusCode === 200) {
+        const avatar = JSON.parse(res.data).result.avatar
+        profile.value!.avatar = avatar
+        uni.showToast({ title: '头像修改成功', icon: 'success' })
+      } else {
+        uni.showToast({ title: '出现错误', icon: 'error' })
+      }
+    },
+  })
+}
 </script>
 
 <template>
@@ -26,12 +65,29 @@ onLoad(() => {
       <view class="title">个人信息</view>
     </view>
     <!-- 头像 -->
+    <!-- 这里换成使用微信小程序的头像组件 -->
     <view class="avatar">
+      <view class="avatar-content">
+        <button
+          style="background-color: #fff0; border: none; padding: 0; margin: 0"
+          class="avatar-wrapper"
+          open-type="chooseAvatar"
+          @chooseavatar="onChooseAvatar"
+        >
+          <view class="avatar-content">
+            <image class="image" :src="profile.avatar" mode="aspectFill" />
+            <text class="text">点击修改头像</text>
+          </view>
+        </button>
+      </view>
+    </view>
+    <!-- 头像 -->
+    <!-- <view class="avatar" @tap="onAvatarChange">
       <view class="avatar-content">
         <image class="image" :src="profile.avatar" mode="aspectFill" />
         <text class="text">点击修改头像</text>
       </view>
-    </view>
+    </view> -->
     <!-- 表单 -->
     <view class="form">
       <!-- 表单内容 -->
@@ -43,6 +99,15 @@ onLoad(() => {
         <view class="form-item">
           <text class="label">昵称</text>
           <input class="input" type="text" placeholder="请填写昵称" :value="profile?.nickname" />
+        </view>
+        <view class="form-item">
+          <text class="label">昵称</text>
+          <input
+            class="weui-input"
+            type="nickname"
+            placeholder="请填写昵称"
+            :value="profile?.nickname"
+          />
         </view>
         <view class="form-item">
           <text class="label">性别</text>
