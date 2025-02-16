@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getMemberProfileApi, putMemberProfileApi } from '@/services/profile'
 import { useMemberStore } from '@/stores'
-import { ProfileDetail } from '@/types/member'
+import { Gender, ProfileDetail } from '@/types/member'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 
@@ -64,10 +64,16 @@ const uploadAvatar = (tempUrl: string) => {
 const onSubmit = async () => {
   const res = await putMemberProfileApi({
     nickname: profile.value?.nickname,
+    gender: profile.value?.gender,
   })
   memberStore.profile.nickname = profile.value?.nickname
   uni.navigateBack()
   uni.showToast({ title: '修改成功', icon: 'success' })
+}
+
+// 修改性别
+const onGenderChange: UniHelper.RadioGroupOnChange = (e) => {
+  profile.value.gender = e.detail.value as Gender
 }
 </script>
 
@@ -126,7 +132,7 @@ const onSubmit = async () => {
         </view>
         <view class="form-item">
           <text class="label">性别</text>
-          <radio-group>
+          <radio-group @change="onGenderChange">
             <label class="radio">
               <radio value="男" color="#27ba9b" :checked="profile?.gender === '男'" />
               男
