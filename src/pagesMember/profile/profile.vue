@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getMemberProfileApi } from '@/services/profile'
+import { getMemberProfileApi, putMemberProfileApi } from '@/services/profile'
 import { ProfileDetail } from '@/types/member'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
@@ -8,7 +8,7 @@ import { ref } from 'vue'
 const { safeAreaInsets } = uni.getWindowInfo()
 
 // 获取用户信息
-const profile = ref<ProfileDetail>()
+const profile = ref<ProfileDetail>({} as ProfileDetail)
 const getMemberProfileData = async () => {
   const res = await getMemberProfileApi()
   profile.value = res.result
@@ -55,6 +55,14 @@ const uploadAvatar = (tempUrl: string) => {
     },
   })
 }
+
+// 点击保存提交表单
+const onSubmit = async () => {
+  const res = await putMemberProfileApi({
+    nickname: profile.value?.nickname,
+  })
+  uni.showToast({ title: '修改成功', icon: 'success' })
+}
 </script>
 
 <template>
@@ -96,17 +104,18 @@ const uploadAvatar = (tempUrl: string) => {
           <text class="label">账号</text>
           <text class="account">{{ profile.account }}</text>
         </view>
-        <view class="form-item">
+        <!-- <view class="form-item">
           <text class="label">昵称</text>
           <input class="input" type="text" placeholder="请填写昵称" :value="profile?.nickname" />
-        </view>
+        </view> -->
+        <!-- 替换为微信小程序提供的昵称接口 -->
         <view class="form-item">
           <text class="label">昵称</text>
           <input
-            class="weui-input"
+            class="weui-input input"
             type="nickname"
             placeholder="请填写昵称"
-            :value="profile?.nickname"
+            v-model="profile.nickname"
           />
         </view>
         <view class="form-item">
@@ -148,7 +157,7 @@ const uploadAvatar = (tempUrl: string) => {
         </view>
       </view>
       <!-- 提交按钮 -->
-      <button class="form-button">保 存</button>
+      <button @tap="onSubmit" class="form-button">保 存</button>
     </view>
   </view>
 </template>

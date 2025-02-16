@@ -1,4 +1,4 @@
-import type { ProfileDetail } from '@/types/member'
+import type { ProfileDetail, ProfileParams } from '@/types/member'
 import { http } from '@/utils/https'
 
 /**
@@ -8,5 +8,16 @@ export const getMemberProfileApi = () => {
   return http<ProfileDetail>({
     method: 'GET',
     url: '/member/profile',
+  })
+}
+/**
+ * 修改个人信息
+ * @param data 请求体参数
+ */
+export const putMemberProfileApi = (data: ProfileParams) => {
+  return http<ProfileDetail>({
+    method: 'PUT',
+    url: '/member/profile',
+    data,
   })
 }
