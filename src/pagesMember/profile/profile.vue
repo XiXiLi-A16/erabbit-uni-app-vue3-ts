@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getMemberProfileApi, putMemberProfileApi } from '@/services/profile'
+import { useMemberStore } from '@/stores'
 import { ProfileDetail } from '@/types/member'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
@@ -29,6 +30,8 @@ const onAvatarChange = () => {
     },
   })
 }
+
+const memberStore = useMemberStore()
 const onChooseAvatar: UniHelper.ButtonOnChooseavatar = (e) => {
   console.log(e)
   const { avatarUrl } = e.detail
@@ -36,6 +39,7 @@ const onChooseAvatar: UniHelper.ButtonOnChooseavatar = (e) => {
   // 伪装实现，没有上传服务器
   profile.value!.avatar = avatarUrl
   uni.showToast({ title: '头像修改成功', icon: 'success' })
+  memberStore.profile.avatar = avatarUrl
 }
 
 // 文件上传，写法正确，黑马的接口挂了
@@ -61,6 +65,8 @@ const onSubmit = async () => {
   const res = await putMemberProfileApi({
     nickname: profile.value?.nickname,
   })
+  memberStore.profile.nickname = profile.value?.nickname
+  uni.navigateBack()
   uni.showToast({ title: '修改成功', icon: 'success' })
 }
 </script>
